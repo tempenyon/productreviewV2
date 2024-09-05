@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+
+        .main-container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            padding: 12px 24px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        // Check if 'initShown' exists in localStorage
+        if (localStorage.getItem('initShown')) {
+            // Redirect to home page if the page has already been shown
+            window.location.href = 'index.html';
+        }
+        
+        window.onload = function() {
+            // Set 'initShown' in localStorage once the page loads
+            localStorage.setItem('initShown', 'true');
+        };
+    </script>
+</head>
+<body>
+    <div class="main-container">
+        <h1>Selamat Datang di ProductLens!</h1>
+        <p>Nikmati pengalaman Anda di dan temukan produk yang tepat untuk kebutuhan Anda.</p>
+        <button class="button" id="initializeButton">Next</button>
+    </div>
+
+    <script>
+        document.getElementById('initializeButton').addEventListener('click', function() {
+            // Initialize sample data
+            initializeSampleData();
+        });
+
+        function initializeSampleData() {
+            let products = [
+                {
+                    name: "Laptop X-Pro 15",
+                    description: "Laptop X-Pro 15 dilengkapi dengan prosesor Intel Core i7 generasi terbaru, RAM 16GB, dan penyimpanan SSD 512GB. Layar 15,6 inci Full HD memberikan pengalaman visual yang tajam, cocok untuk pekerjaan multitasking dan gaming ringan.",
+                    image: "https://down-id.img.susercontent.com/file/4e300330459f6bf289b459e1eeaa6fff",
+                    price: 12500000,
+                    category: "Electronics",
+                    reviews: [
+                        { rating: 5, text: "Laptop ini sangat cepat dan cocok untuk pekerjaan saya sebagai desainer grafis. Layarnya juga sangat jernih!" },
+                        { rating: 4, text: "Desainnya stylish, dan performa saat bermain game cukup memuaskan." },
+                        { rating: 3, text: "Kinerja baterainya cukup baik, tetapi agak berat untuk dibawa ke mana-mana." }
+                    ]
+                },
+                {
+                    name: "Headphone SupremeSound X7",
+                    description: "Headphone SupremeSound X7 hadir dengan teknologi noise-cancelling dan kualitas suara bass yang mendalam. Cocok digunakan untuk mendengarkan musik atau bermain game dengan pengalaman audio terbaik.",
+                    image: "https://rukminim2.flixcart.com/image/850/1000/headset/g/7/r/skullcandy-cassette-s5csdy-210-premium-with-mic-original-imadrfw3zvgcmwmt.jpeg?q=90&crop=false",
+                    price: 850000,
+                    category: "Elektronik",
+                    reviews: [
+                        { rating: 3, text: "Harga sesuai dengan kualitas, tapi ada yang lebih baik di harga yang sedikit lebih tinggi." },
+                        { rating: 3, text: "Suara bassnya sangat bagus, tapi tidak nyaman digunakan dalam jangka waktu lama." },
+                        { rating: 4, text: "Fitur noise-cancelling berfungsi dengan baik di tempat ramai." }
+                    ]
+                },
+                {
+                    name: "Perlengkapan Berkebun GreenThumb Starter Kit",
+                    description: "Perlengkapan Berkebun GreenThumb Starter Kit mencakup alat-alat dasar seperti cangkul, sekop, dan sarung tangan berkualitas. Ideal bagi pemula yang ingin memulai hobi berkebun dengan alat yang efisien dan mudah digunakan.",
+                    image: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/109/MTA-172467099/no-brand_no-brand_full06.jpg",
+                    price: 250000,
+                    category: "Hobi",
+                    reviews: [
+                        { rating: 5, text: "Set alat berkebun ini sangat lengkap dan membantu saya memulai dengan mudah." },
+                        { rating: 4, text: "Kualitas alatnya bagus dan tahan lama, cocok untuk pemula." },
+                        { rating: 4, text: "Sarung tangan sangat nyaman dan melindungi tangan dengan baik." }
+                    ]
+                },
+                {
+                    name: "Ranjang Kayu Oakland",
+                    description: "Ranjang Kayu Oakland terbuat dari kayu oak berkualitas tinggi dengan desain klasik dan elegan. Dilengkapi dengan kasur busa memori, ranjang ini menawarkan kenyamanan dan dukungan optimal untuk tidur yang berkualitas.",
+                    image: "https://lh5.googleusercontent.com/proxy/UAGNnD9QDEwyiu7dwulGrrPIlZ3HmE8SUchaYGeYvggUpomxpUfRrlsC0waiyox6Hx0qUTCIaBXrEPx8aTmlUGmC6bAhHWr-0s2OkVE5GA",
+                    price: 4500000,
+                    category: "Furnitur",
+                    reviews: [
+                        { rating: 3, text: "Desainnya bagus, tetapi kualitas kayunya kurang bagus dan ada goresan kecil." },
+                        { rating: 3, text: "Kasurnya nyaman, tapi pemasangan ranjang cukup sulit dan memerlukan waktu lama." },
+                        { rating: 1, text: "Harga tidak terlalu sebanding dengan kualitas yang diterima. Ada beberapa bagian yang tidak sesuai harapan." }
+                    ]
+                },
+                {
+                    name: "Minyak Zaitun Extra Virgin PureGold",
+                    description: "Minyak Zaitun Extra Virgin PureGold adalah minyak zaitun berkualitas tinggi dengan rasa yang ringan dan kaya akan antioksidan. Ideal untuk salad, memasak, dan sebagai dressing sehat.",
+                    image: "https://images.tokopedia.net/img/cache/500-square/product-1/2019/4/26/1816861/1816861_eb180dba-556f-4e24-b61f-1ab6e7737d89_700_700.jpg",
+                    price: 120000,
+                    category: "Minyak",
+                    reviews: [
+                        { rating: 3, text: "Rasa minyaknya enak, tapi botolnya bocor saat pengiriman." },
+                        { rating: 3, text: "Kualitasnya baik, tetapi harga terlalu tinggi untuk ukuran yang didapat." },
+                        { rating: 5, text: "Minyak ini tidak memiliki keunggulan yang signifikan dibandingkan dengan merek lain." }
+                    ]
+                },
+                {
+                    name: "Buku Trik Dagang Orang Tionghoa",
+                    description: "Buku Trik Dagang Orang Tionghoa menawarkan wawasan mendalam mengenai strategi bisnis dan trik dagang yang telah digunakan oleh pengusaha Tionghoa sukses selama bertahun-tahun. Dengan panduan praktis dan studi kasus yang relevan, buku ini cocok untuk para pengusaha, pebisnis, dan siapa saja yang ingin memahami teknik dagang yang efektif dan berpengalaman.",
+                    image: "https://down-id.img.susercontent.com/file/370761c133d744e78590888abb6ef543",
+                    price: 200000,
+                    category: "Buku",
+                    reviews: [
+                        { rating: 5, text: "Buku ini sangat informatif dan memberikan wawasan berharga tentang strategi dagang yang telah terbukti efektif. Sangat membantu bagi saya sebagai pengusaha baru." },
+                        { rating: 4, text: "Penulis menjelaskan konsep-konsep bisnis dengan cara yang jelas dan mudah dipahami." },
+                        { rating: 5, text: "Sangat direkomendasikan bagi siapa saja yang ingin memperdalam pemahaman tentang strategi bisnis." },
+                        { rating: 5, text: "Setelah membaca buku ini, saya merasa lebih percaya diri dalam mengambil keputusan bisnis dan menerapkan trik-trik dagang yang efektif." }
+                    ]
+                },
+                {
+                    name: "Nike Flyknit Max",
+                    description: "Nike Flyknit Max dirancang untuk pelari dengan bantalan tambahan dan bahan yang ringan, membuat setiap langkah terasa nyaman. Dengan teknologi breathable mesh, kaki tetap sejuk selama olahraga.",
+                    image: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/nike_nike-flyknit-max-620469-003-sepatu-lari-pria_full01.jpg",
+                    price: 750000,
+                    category: "Fashion",
+                    reviews: [
+                        { rating: 4, text: "Sangat nyaman untuk lari jarak jauh, solnya lembut tapi tetap kuat." },
+                        { rating: 4, text: "Sepatunya ringan, membuat saya lebih cepat dan tidak mudah lelah." },
+                        { rating: 5, text: "Desainnya keren, cocok juga dipakai sehari-hari, bukan cuma untuk olahraga." }
+
+                    ]
+                }
+            ];
+
+            // Save data to localStorage
+            localStorage.setItem('products', JSON.stringify(products));
+
+            // Redirect to the main page
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

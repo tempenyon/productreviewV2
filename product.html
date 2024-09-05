@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        /* Main container for product details */
+        .product-details {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Heading styling */
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        /* Product image styling */
+        .product-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Product details text */
+        .product-details p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        /* Star rating styling */
+        .star-rating {
+            color: #f5a623; /* Gold color */
+            font-size: 1.5em;
+        }
+
+        /* Review section styling */
+        #productReviews {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Each review block */
+        .review-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        /* Edit and Delete buttons in reviews */
+        .edit-btn, .delete-btn {
+            padding: 10px 15px;
+            margin-top: 10px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .edit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        /* Review form container */
+        .review-form {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form title */
+        #formTitle {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            color: #333;
+        }
+
+        /* Form labels */
+        label {
+            font-size: 1em;
+            color: #333;
+        }
+
+        /* Input and textarea styling */
+        input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        /* Submit button styling */
+        .submit-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Back to home button styling */
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #6c757d;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .product-details, #productReviews, .review-form {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .submit-btn, .edit-btn, .delete-btn, .back-button {
+                font-size: 1em;
+                padding: 10px 15px;
+            }
+
+            #formTitle {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="product-details" id="productDetails">
+        <!-- Product details will be inserted here -->
+    </div>
+    <div id="productReviews">
+        <!-- Product reviews will be inserted here -->
+    </div>
+
+    <form id="reviewForm" class="review-form">
+        <h2 id="formTitle"></h2>
+        <label for="reviewRating">Rating (1-5):</label>
+        <input type="number" id="reviewRating" min="1" max="5" required>
+        <br>
+        <label for="reviewText">Review:</label>
+        <textarea id="reviewText" rows="4" required></textarea>
+        <br>
+        <span id="errorMessage" class="error-message"></span>
+        <br>
+        <button type="submit" id="submitButton" class="submit-btn"></button>
+    </form>
+
+    <a href="index.html" class="back-button">Back to Home</a>
+
+    <script>
+        let urlParams = new URLSearchParams(window.location.search);
+        let productIndex = urlParams.get('index');
+        let reviewIndexToEdit = urlParams.get('editReview');
+
+        if (productIndex !== null) {
+            displayProductDetails(productIndex);
+        }
+
+        function displayProductDetails(index) {
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            let product = products[index];
+            if (!product) return;
+
+            // Display product details
+            let stars = getStars(calculateAverageRating(product.reviews));
+            document.getElementById('productDetails').innerHTML = `
+                <h1>${product.name}</h1>
+                <img src="${product.image}" alt="Product Image" class="product-image">
+                <p>${product.description}</p>
+                <p>Price: Rp ${formatRupiah(product.price)}</p>
+                <p>Average Rating: <span class="star-rating">${stars}</span></p>
+            `;
+
+            // Display product reviews
+            let reviewList = document.getElementById('productReviews');
+            reviewList.innerHTML = '';
+
+            product.reviews.forEach((review, reviewIndex) => {
+                if (review.rating && review.text) {
+                    let reviewItem = `
+                        <div class="review-item" id="review-${reviewIndex}">
+                            <p>Rating: <span class="star-rating">${getStars(review.rating)}</span></p>
+                            <p>${review.text}</p>
+                            <button onclick="editReview(${index}, ${reviewIndex})" class="edit-btn">Edit</button>
+                            <button onclick="deleteReview(${index}, ${reviewIndex})" class="delete-btn">Delete</button>
+                        </div>
+                    `;
+                    reviewList.innerHTML += reviewItem;
+                }
+            });
+
+            // Set form title and button text based on edit or add mode
+            document.getElementById('formTitle').textContent = reviewIndexToEdit !== null ? 'Edit Review' : 'Add Review';
+            document.getElementById('submitButton').textContent = reviewIndexToEdit !== null ? 'Update Review' : 'Submit Review';
+
+            document.getElementById('reviewForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                handleReviewFormSubmit(productIndex);
+            });
+
+            reviewIndexToEdit = null;
+            window.history.replaceState(null, null, `?index=${productIndex}`);
+        }
+
+        function handleReviewFormSubmit(productIndex) {
+            let rating = document.getElementById('reviewRating').value;
+            let reviewText = document.getElementById('reviewText').value.trim();
+            let errorMessage = document.getElementById('errorMessage');
+
+            if (rating < 1 || rating > 5 || reviewText === '') {
+                errorMessage.textContent = 'Please provide a valid rating and review text.';
+                return;
+            }
+            
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            let product = products[productIndex];
+            let reviewIndexToEdit = new URLSearchParams(window.location.search).get('editReview');
+
+            if (reviewIndexToEdit !== null) {
+                product.reviews[reviewIndexToEdit] = { rating: parseInt(rating), text: reviewText };
+            } else {
+                product.reviews.push({ rating: parseInt(rating), text: reviewText });
+            }
+
+            localStorage.setItem('products', JSON.stringify(products));
+            displayProductDetails(productIndex);
+            document.getElementById('reviewForm').reset();
+            errorMessage.textContent = '';
+        }
+
+        function editReview(productIndex, reviewIndex) {
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            let review = products[productIndex].reviews[reviewIndex];
+
+            document.getElementById('reviewRating').value = review.rating;
+            document.getElementById('reviewText').value = review.text;
+            document.getElementById('formTitle').textContent = 'Edit Review';
+            document.getElementById('submitButton').textContent = 'Update Review';
+
+            window.history.replaceState(null, null, `?index=${productIndex}&editReview=${reviewIndex}`);
+        }
+
+        function deleteReview(productIndex, reviewIndex) {
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            products[productIndex].reviews.splice(reviewIndex, 1);
+            localStorage.setItem('products', JSON.stringify(products));
+            displayProductDetails(productIndex);
+        }
+
+        function calculateAverageRating(reviews) {
+            if (reviews.length === 0) return 0;
+            let total = reviews.reduce((sum, review) => sum + review.rating, 0);
+            return total / reviews.length;
+        }
+
+        function getStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += i <= rating ? '★' : '☆';
+            }
+            return stars;
+        }
+
+        function formatRupiah(amount) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount);
+        }
+    </script>
+</body>
+</html>
