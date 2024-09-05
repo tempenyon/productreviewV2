@@ -51,15 +51,10 @@
         }
     </style>
     <script>
-        // Check if 'initShown' exists in localStorage
-        if (localStorage.getItem('initShown')) {
-            // Redirect to home page if the page has already been shown
-            window.location.href = 'index.html';
-        }
-        
         window.onload = function() {
-            // Set 'initShown' in localStorage once the page loads
-            localStorage.setItem('initShown', 'true');
+            if (localStorage.getItem('initialized') === 'true') {
+                window.location.href = 'index.html';
+            }
         };
     </script>
 </head>
