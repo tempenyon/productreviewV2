@@ -6,10 +6,13 @@
     <title>Product List</title>
     <script>
         window.onload = function() {
-            // Check if the products data is already initialized
+            // Check if the products data is initialized
             if (!localStorage.getItem('initialized')) {
                 // Redirect to init.html if data is not initialized
                 window.location.href = 'init.html';
+            } else {
+                // Display products if initialized
+                displayProducts();
             }
         };
     </script>
