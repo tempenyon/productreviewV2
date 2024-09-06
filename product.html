@@ -14,27 +14,6 @@
             background-color: #f4f4f4;
         }
 
-        /* Loading screen styling */
-        #loadingScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2em;
-            color: #666;
-            z-index: 9999;
-        }
-
-        /* Hide main content until initialization is complete */
-        .hidden {
-            display: none;
-        }
-
         /* Main container for product details */
         .product-details {
             max-width: 900px;
@@ -212,53 +191,35 @@
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loadingScreen">Loading...</div>
-
-    <!-- Main content that is initially hidden -->
-    <div id="mainContent" class="hidden">
-        <div class="product-details" id="productDetails">
-            <!-- Product details will be inserted here -->
-        </div>
-        <div id="productReviews">
-            <!-- Product reviews will be inserted here -->
-        </div>
-
-        <form id="reviewForm" class="review-form">
-            <h2 id="formTitle"></h2>
-            <label for="reviewRating">Rating (1-5):</label>
-            <input type="number" id="reviewRating" min="1" max="5" required>
-            <br>
-            <label for="reviewText">Review:</label>
-            <textarea id="reviewText" rows="4" required></textarea>
-            <br>
-            <span id="errorMessage" class="error-message"></span>
-            <br>
-            <button type="submit" id="submitButton" class="submit-btn">Submit</button>
-        </form>
-
-        <a href="index.html" class="back-button">Back to Home</a>
+    <div class="product-details" id="productDetails">
+        <!-- Product details will be inserted here -->
+    </div>
+    <div id="productReviews">
+        <!-- Product reviews will be inserted here -->
     </div>
 
+    <form id="reviewForm" class="review-form">
+        <h2 id="formTitle"></h2>
+        <label for="reviewRating">Rating (1-5):</label>
+        <input type="number" id="reviewRating" min="1" max="5" required>
+        <br>
+        <label for="reviewText">Review:</label>
+        <textarea id="reviewText" rows="4" required></textarea>
+        <br>
+        <span id="errorMessage" class="error-message"></span>
+        <br>
+        <button type="submit" id="submitButton" class="submit-btn"></button>
+    </form>
+
+    <a href="index.html" class="back-button">Back to Home</a>
+
     <script>
-        window.onload = function() {
-            // Simulate initialization delay (e.g., loading products from server or initializing settings)
-            setTimeout(function() {
-                // Hide the loading screen
-                document.getElementById('loadingScreen').style.display = 'none';
+        let urlParams = new URLSearchParams(window.location.search);
+        let productIndex = urlParams.get('index');
+        let reviewIndexToEdit = urlParams.get('editReview');
 
-                // Show the main content
-                document.getElementById('mainContent').classList.remove('hidden');
-
-                // Now start displaying the product details
-                let urlParams = new URLSearchParams(window.location.search);
-                let productIndex = urlParams.get('index');
-                let reviewIndexToEdit = urlParams.get('editReview');
-
-                if (productIndex !== null) {
-                    displayProductDetails(productIndex);
-                }
-            }, 2000); // Adjust this time as needed for your loading simulation
+        if (productIndex !== null) {
+            displayProductDetails(productIndex);
         }
 
         function displayProductDetails(index) {
@@ -268,61 +229,106 @@
 
             // Display product details
             let stars = getStars(calculateAverageRating(product.reviews));
-            document.getElementById('productDetails').innerHTML = `
+            document.getElementById('productDetails').innerHTML = 
                 <h1>${product.name}</h1>
                 <img src="${product.image}" alt="Product Image" class="product-image">
                 <p>${product.description}</p>
                 <p>Price: Rp ${formatRupiah(product.price)}</p>
-                <p>Average Rating: <span class="star-rating">${stars}</span> (${product.reviews.length} reviews)</p>
-            `;
+                <p>Average Rating: <span class="star-rating">${stars}</span></p>
+            ;
 
             // Display product reviews
-            let reviewsContainer = document.getElementById('productReviews');
-            reviewsContainer.innerHTML = '<h2>Customer Reviews:</h2>';
+            let reviewList = document.getElementById('productReviews');
+            reviewList.innerHTML = '';
 
-            if (product.reviews.length > 0) {
-                product.reviews.forEach(function(review, reviewIndex) {
-                    reviewsContainer.innerHTML += `
-                        <div class="review-item">
+            product.reviews.forEach((review, reviewIndex) => {
+                if (review.rating && review.text) {
+                    let reviewItem = 
+                        <div class="review-item" id="review-${reviewIndex}">
                             <p>Rating: <span class="star-rating">${getStars(review.rating)}</span></p>
-                            <p>Review: ${review.text}</p>
-                            <button class="edit-btn" onclick="editReview(${index}, ${reviewIndex})">Edit</button>
-                            <button class="delete-btn" onclick="deleteReview(${index}, ${reviewIndex})">Delete</button>
+                            <p>${review.text}</p>
+                            <button onclick="editReview(${index}, ${reviewIndex})" class="edit-btn">Edit</button>
+                            <button onclick="deleteReview(${index}, ${reviewIndex})" class="delete-btn">Delete</button>
                         </div>
-                    `;
-                });
-            } else {
-                reviewsContainer.innerHTML += '<p>No reviews yet.</p>';
+                    ;
+                    reviewList.innerHTML += reviewItem;
+                }
+            });
+
+            // Set form title and button text based on edit or add mode
+            document.getElementById('formTitle').textContent = reviewIndexToEdit !== null ? 'Edit Review' : 'Add Review';
+            document.getElementById('submitButton').textContent = reviewIndexToEdit !== null ? 'Update Review' : 'Submit Review';
+
+            document.getElementById('reviewForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                handleReviewFormSubmit(productIndex);
+            });
+
+            reviewIndexToEdit = null;
+            window.history.replaceState(null, null, ?index=${productIndex});
+        }
+
+        function handleReviewFormSubmit(productIndex) {
+            let rating = document.getElementById('reviewRating').value;
+            let reviewText = document.getElementById('reviewText').value.trim();
+            let errorMessage = document.getElementById('errorMessage');
+
+            if (rating < 1 || rating > 5 || reviewText === '') {
+                errorMessage.textContent = 'Please provide a valid rating and review text.';
+                return;
             }
+            
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            let product = products[productIndex];
+            let reviewIndexToEdit = new URLSearchParams(window.location.search).get('editReview');
+
+            if (reviewIndexToEdit !== null) {
+                product.reviews[reviewIndexToEdit] = { rating: parseInt(rating), text: reviewText };
+            } else {
+                product.reviews.push({ rating: parseInt(rating), text: reviewText });
+            }
+
+            localStorage.setItem('products', JSON.stringify(products));
+            displayProductDetails(productIndex);
+            document.getElementById('reviewForm').reset();
+            errorMessage.textContent = '';
+        }
+
+        function editReview(productIndex, reviewIndex) {
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            let review = products[productIndex].reviews[reviewIndex];
+
+            document.getElementById('reviewRating').value = review.rating;
+            document.getElementById('reviewText').value = review.text;
+            document.getElementById('formTitle').textContent = 'Edit Review';
+            document.getElementById('submitButton').textContent = 'Update Review';
+
+            window.history.replaceState(null, null, ?index=${productIndex}&editReview=${reviewIndex});
+        }
+
+        function deleteReview(productIndex, reviewIndex) {
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            products[productIndex].reviews.splice(reviewIndex, 1);
+            localStorage.setItem('products', JSON.stringify(products));
+            displayProductDetails(productIndex);
         }
 
         function calculateAverageRating(reviews) {
             if (reviews.length === 0) return 0;
-            let sum = reviews.reduce((acc, review) => acc + review.rating, 0);
-            return sum / reviews.length;
+            let total = reviews.reduce((sum, review) => sum + review.rating, 0);
+            return total / reviews.length;
         }
 
         function getStars(rating) {
-            return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += i <= rating ? '★' : '☆';
+            }
+            return stars;
         }
 
         function formatRupiah(amount) {
-            return new Intl.NumberFormat('id-ID').format(amount);
-        }
-
-        // Function to edit a review
-        function editReview(productIndex, reviewIndex) {
-            window.location.href = `review.html?index=${productIndex}&editReview=${reviewIndex}`;
-        }
-
-        // Function to delete a review
-        function deleteReview(productIndex, reviewIndex) {
-            if (!confirm('Are you sure you want to delete this review?')) return;
-            let products = JSON.parse(localStorage.getItem('products')) || [];
-            let product = products[productIndex];
-            product.reviews.splice(reviewIndex, 1); // Remove review from the list
-            localStorage.setItem('products', JSON.stringify(products)); // Save changes
-            displayProductDetails(productIndex); // Refresh page
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount);
         }
     </script>
 </body>
