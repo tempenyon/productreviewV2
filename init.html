@@ -5,17 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details</title>
 <script>
-    window.onload = function() {
-        // Check if the products data is initialized in localStorage
-        if (!localStorage.getItem('initialized')) {
-            // Redirect to init.html if the data is not initialized
-            window.location.href = 'init.html';
-        } else {
-            // Call the function to display products on product.html
-            displayProducts();
-        }
-    }
-
     // Function to display products
     function displayProducts() {
         // Assuming you store product data in localStorage as a JSON string
@@ -250,11 +239,6 @@
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loadingScreen">Loading...</div>
-
-    <!-- Main content that is initially hidden -->
-    <div id="mainContent" class="hidden">
         <div class="product-details" id="productDetails">
             <!-- Product details will be inserted here -->
         </div>
