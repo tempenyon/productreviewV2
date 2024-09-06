@@ -166,12 +166,24 @@
                 }
             ];
 
-            // Save data to localStorage
+            // Save products to localStorage
             localStorage.setItem('products', JSON.stringify(products));
-
-            // Redirect to the main page
+            // Set the 'initialized' flag to true
+            localStorage.setItem('initialized', 'true');
+            
+            // Redirect to the index page after initializing
             window.location.href = 'index.html';
         }
+        
+        window.onload = function() {
+            // Automatically initialize when the page loads
+            if (!localStorage.getItem('initialized')) {
+                initializeProducts();
+            } else {
+                // If already initialized, redirect to the index page
+                window.location.href = 'index.html';
+            }
+        };
     </script>
 </body>
 </html>
