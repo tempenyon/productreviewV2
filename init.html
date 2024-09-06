@@ -3,348 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details</title>
-<script>
-    // Function to display products
-    function displayProducts() {
-        // Assuming you store product data in localStorage as a JSON string
-        const products = JSON.parse(localStorage.getItem('products'));
-
-        // Get the element where you want to display the products
-        const productContainer = document.getElementById('product-list');
-
-        // Loop through the products and create HTML elements dynamically
-        if (products && productContainer) {
-            products.forEach(product => {
-                const productElement = document.createElement('div');
-                productElement.classList.add('product-box');
-
-                productElement.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
-                    <h2>${product.name}</h2>
-                    <p>${product.price}</p>
-                    <button>Add to Cart</button>
-                `;
-
-                productContainer.appendChild(productElement);
-            });
-        }
-    }
-</script>
+    <title>Welcome</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* General body styling */
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-
-        /* Loading screen styling */
-        #loadingScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2em;
-            color: #666;
-            z-index: 9999;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
         }
 
-        /* Hide main content until initialization is complete */
-        .hidden {
-            display: none;
-        }
-
-        /* Main container for product details */
-        .product-details {
-            max-width: 900px;
-            margin: 20px auto;
+        .main-container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
             padding: 20px;
-            background-color: #fff;
+            background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* Heading styling */
         h1 {
             font-size: 2em;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        /* Product image styling */
-        .product-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
             margin-bottom: 20px;
         }
 
-        /* Product details text */
-        .product-details p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            color: #666;
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
         }
 
-        /* Star rating styling */
-        .star-rating {
-            color: #f5a623; /* Gold color */
-            font-size: 1.5em;
-        }
-
-        /* Review section styling */
-        #productReviews {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Each review block */
-        .review-item {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        /* Edit and Delete buttons in reviews */
-        .edit-btn, .delete-btn {
-            padding: 10px 15px;
-            margin-top: 10px;
-            margin-right: 5px;
+        .button {
+            padding: 12px 24px;
+            background-color: #007BFF;
+            color: white;
             border: none;
             border-radius: 5px;
-            font-size: 1em;
+            font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
 
-        .delete-btn {
-            background-color: #dc3545;
-        }
-
-        .edit-btn:hover {
+        .button:hover {
             background-color: #0056b3;
         }
-
-        .delete-btn:hover {
-            background-color: #c82333;
-        }
-
-        /* Review form container */
-        .review-form {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Form title */
-        #formTitle {
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            color: #333;
-        }
-
-        /* Form labels */
-        label {
-            font-size: 1em;
-            color: #333;
-        }
-
-        /* Input and textarea styling */
-        input[type="number"], textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-            box-sizing: border-box;
-        }
-
-        /* Error message styling */
-        .error-message {
-            color: #dc3545;
-            font-size: 0.9em;
-            margin-top: 10px;
-        }
-
-        /* Submit button styling */
-        .submit-btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #28a745;
-            color: #fff;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .submit-btn:hover {
-            background-color: #218838;
-        }
-
-        /* Back to home button styling */
-        .back-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 20px;
-            background-color: #6c757d;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1em;
-            transition: background-color 0.3s;
-        }
-
-        .back-button:hover {
-            background-color: #5a6268;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .product-details, #productReviews, .review-form {
-                padding: 15px;
-            }
-
-            h1 {
-                font-size: 1.5em;
-            }
-
-            .submit-btn, .edit-btn, .delete-btn, .back-button {
-                font-size: 1em;
-                padding: 10px 15px;
-            }
-
-            #formTitle {
-                font-size: 1.5em;
-            }
-        }
     </style>
+    <script>
+        // Check if 'initShown' exists in localStorage
+        if (localStorage.getItem('initShown')) {
+            // Redirect to home page if the page has already been shown
+            window.location.href = 'index.html';
+        }
+        
+        window.onload = function() {
+            // Set 'initShown' in localStorage once the page loads
+            localStorage.setItem('initShown', 'true');
+        };
+    </script>
 </head>
 <body>
-        <div class="product-details" id="productDetails">
-            <!-- Product details will be inserted here -->
-        </div>
-        <div id="productReviews">
-            <!-- Product reviews will be inserted here -->
-        </div>
-
-        <form id="reviewForm" class="review-form">
-            <h2 id="formTitle"></h2>
-            <label for="reviewRating">Rating (1-5):</label>
-            <input type="number" id="reviewRating" min="1" max="5" required>
-            <br>
-            <label for="reviewText">Review:</label>
-            <textarea id="reviewText" rows="4" required></textarea>
-            <br>
-            <span id="errorMessage" class="error-message"></span>
-            <br>
-            <button type="submit" id="submitButton" class="submit-btn"></button>
-        </form>
-
-        <a href="index.html" class="back-button">Back to Home</a>
+    <div class="main-container">
+        <h1>Selamat Datang di ProductLens!</h1>
+        <p>Nikmati pengalaman Anda di dan temukan produk yang tepat untuk kebutuhan Anda.</p>
+        <button class="button" id="initializeButton">Next</button>
     </div>
 
     <script>
-        window.onload = function() {
-            // Simulate initialization delay (e.g., loading products from server or initializing settings)
-            setTimeout(function() {
-                // Hide the loading screen
-                document.getElementById('loadingScreen').style.display = 'none';
+        document.getElementById('initializeButton').addEventListener('click', function() {
+            // Initialize sample data
+            initializeSampleData();
+        });
 
-                // Show the main content
-                document.getElementById('mainContent').classList.remove('hidden');
+        function initializeSampleData() {
+            let products = [
+                {
+                    name: "Laptop X-Pro 15",
+                    description: "Laptop X-Pro 15 dilengkapi dengan prosesor Intel Core i7 generasi terbaru, RAM 16GB, dan penyimpanan SSD 512GB. Layar 15,6 inci Full HD memberikan pengalaman visual yang tajam, cocok untuk pekerjaan multitasking dan gaming ringan.",
+                    image: "https://down-id.img.susercontent.com/file/4e300330459f6bf289b459e1eeaa6fff",
+                    price: 12500000,
+                    category: "Electronics",
+                    reviews: [
+                        { rating: 5, text: "Laptop ini sangat cepat dan cocok untuk pekerjaan saya sebagai desainer grafis. Layarnya juga sangat jernih!" },
+                        { rating: 4, text: "Desainnya stylish, dan performa saat bermain game cukup memuaskan." },
+                        { rating: 3, text: "Kinerja baterainya cukup baik, tetapi agak berat untuk dibawa ke mana-mana." }
+                    ]
+                },
+                {
+                    name: "Headphone SupremeSound X7",
+                    description: "Headphone SupremeSound X7 hadir dengan teknologi noise-cancelling dan kualitas suara bass yang mendalam. Cocok digunakan untuk mendengarkan musik atau bermain game dengan pengalaman audio terbaik.",
+                    image: "https://i0.wp.com/apjasi.or.id/wp-content/uploads/2022/12/dbe_acoustics_dbe_dj80_foldable_dj_headphone_with_detachable_microphone_full01_b27a5jng.webp?fit=800%2C800&ssl=1",
+                    price: 850000,
+                    category: "Elektronik",
+                    reviews: [
+                        { rating: 3, text: "Harga sesuai dengan kualitas, tapi ada yang lebih baik di harga yang sedikit lebih tinggi." },
+                        { rating: 3, text: "Suara bassnya sangat bagus, tapi tidak nyaman digunakan dalam jangka waktu lama." },
+                        { rating: 4, text: "Fitur noise-cancelling berfungsi dengan baik di tempat ramai." }
+                    ]
+                },
+                {
+                    name: "Perlengkapan Berkebun GreenThumb Starter Kit",
+                    description: "Perlengkapan Berkebun GreenThumb Starter Kit mencakup alat-alat dasar seperti cangkul, sekop, dan sarung tangan berkualitas. Ideal bagi pemula yang ingin memulai hobi berkebun dengan alat yang efisien dan mudah digunakan.",
+                    image: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/109/MTA-172467099/no-brand_no-brand_full06.jpg",
+                    price: 250000,
+                    category: "Hobi",
+                    reviews: [
+                        { rating: 5, text: "Set alat berkebun ini sangat lengkap dan membantu saya memulai dengan mudah." },
+                        { rating: 4, text: "Kualitas alatnya bagus dan tahan lama, cocok untuk pemula." },
+                        { rating: 4, text: "Sarung tangan sangat nyaman dan melindungi tangan dengan baik." }
+                    ]
+                },
+                {
+                    name: "Ranjang Kayu Oakland",
+                    description: "Ranjang Kayu Oakland terbuat dari kayu oak berkualitas tinggi dengan desain klasik dan elegan. Dilengkapi dengan kasur busa memori, ranjang ini menawarkan kenyamanan dan dukungan optimal untuk tidur yang berkualitas.",
+                    image: "https://lh5.googleusercontent.com/proxy/UAGNnD9QDEwyiu7dwulGrrPIlZ3HmE8SUchaYGeYvggUpomxpUfRrlsC0waiyox6Hx0qUTCIaBXrEPx8aTmlUGmC6bAhHWr-0s2OkVE5GA",
+                    price: 4500000,
+                    category: "Furnitur",
+                    reviews: [
+                        { rating: 3, text: "Desainnya bagus, tetapi kualitas kayunya kurang bagus dan ada goresan kecil." },
+                        { rating: 3, text: "Kasurnya nyaman, tapi pemasangan ranjang cukup sulit dan memerlukan waktu lama." },
+                        { rating: 1, text: "Harga tidak terlalu sebanding dengan kualitas yang diterima. Ada beberapa bagian yang tidak sesuai harapan." }
+                    ]
+                },
+                {
+                    name: "Minyak Zaitun Extra Virgin PureGold",
+                    description: "Minyak Zaitun Extra Virgin PureGold adalah minyak zaitun berkualitas tinggi dengan rasa yang ringan dan kaya akan antioksidan. Ideal untuk salad, memasak, dan sebagai dressing sehat.",
+                    image: "https://images.tokopedia.net/img/cache/500-square/product-1/2019/4/26/1816861/1816861_eb180dba-556f-4e24-b61f-1ab6e7737d89_700_700.jpg",
+                    price: 120000,
+                    category: "Minyak",
+                    reviews: [
+                        { rating: 3, text: "Rasa minyaknya enak, tapi botolnya bocor saat pengiriman." },
+                        { rating: 3, text: "Kualitasnya baik, tetapi harga terlalu tinggi untuk ukuran yang didapat." },
+                        { rating: 5, text: "Minyak ini tidak memiliki keunggulan yang signifikan dibandingkan dengan merek lain." }
+                    ]
+                },
+                {
+                    name: "Buku Trik Dagang Orang Tionghoa",
+                    description: "Buku Trik Dagang Orang Tionghoa menawarkan wawasan mendalam mengenai strategi bisnis dan trik dagang yang telah digunakan oleh pengusaha Tionghoa sukses selama bertahun-tahun. Dengan panduan praktis dan studi kasus yang relevan, buku ini cocok untuk para pengusaha, pebisnis, dan siapa saja yang ingin memahami teknik dagang yang efektif dan berpengalaman.",
+                    image: "https://down-id.img.susercontent.com/file/370761c133d744e78590888abb6ef543",
+                    price: 200000,
+                    category: "Buku",
+                    reviews: [
+                        { rating: 5, text: "Buku ini sangat informatif dan memberikan wawasan berharga tentang strategi dagang yang telah terbukti efektif. Sangat membantu bagi saya sebagai pengusaha baru." },
+                        { rating: 4, text: "Penulis menjelaskan konsep-konsep bisnis dengan cara yang jelas dan mudah dipahami." },
+                        { rating: 5, text: "Sangat direkomendasikan bagi siapa saja yang ingin memperdalam pemahaman tentang strategi bisnis." },
+                        { rating: 5, text: "Setelah membaca buku ini, saya merasa lebih percaya diri dalam mengambil keputusan bisnis dan menerapkan trik-trik dagang yang efektif." }
+                    ]
+                },
+                {
+                    name: "Nike Flyknit Max",
+                    description: "Nike Flyknit Max dirancang untuk pelari dengan bantalan tambahan dan bahan yang ringan, membuat setiap langkah terasa nyaman. Dengan teknologi breathable mesh, kaki tetap sejuk selama olahraga.",
+                    image: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/nike_nike-flyknit-max-620469-003-sepatu-lari-pria_full01.jpg",
+                    price: 750000,
+                    category: "Fashion",
+                    reviews: [
+                        { rating: 4, text: "Sangat nyaman untuk lari jarak jauh, solnya lembut tapi tetap kuat." },
+                        { rating: 4, text: "Sepatunya ringan, membuat saya lebih cepat dan tidak mudah lelah." },
+                        { rating: 5, text: "Desainnya keren, cocok juga dipakai sehari-hari, bukan cuma untuk olahraga." }
 
-                // Now start displaying the product details
-                let urlParams = new URLSearchParams(window.location.search);
-                let productIndex = urlParams.get('index');
-                let reviewIndexToEdit = urlParams.get('editReview');
-
-                if (productIndex !== null) {
-                    displayProductDetails(productIndex);
+                    ]
                 }
-            }, 2000); // Adjust this time as needed for your loading simulation
-        }
+            ];
 
-        function displayProductDetails(index) {
-            let products = JSON.parse(localStorage.getItem('products')) || [];
-            let product = products[index];
-            if (!product) return;
+            // Save data to localStorage
+            localStorage.setItem('products', JSON.stringify(products));
 
-            // Display product details
-            let stars = getStars(calculateAverageRating(product.reviews));
-            document.getElementById('productDetails').innerHTML = `
-                <h1>${product.name}</h1>
-                <img src="${product.image}" alt="Product Image" class="product-image">
-                <p>${product.description}</p>
-                <p>Price: Rp ${formatRupiah(product.price)}</p>
-                <p>Average Rating: <span class="star-rating">${stars}</span> (${product.reviews.length} reviews)</p>
-            `;
-
-            // Display product reviews
-            let reviewsContainer = document.getElementById('productReviews');
-            reviewsContainer.innerHTML = '<h2>Customer Reviews:</h2>';
-
-            if (product.reviews.length > 0) {
-                product.reviews.forEach(function(review, reviewIndex) {
-                    reviewsContainer.innerHTML += `
-                        <div class="review-item">
-                            <p>Rating: <span class="star-rating">${getStars(review.rating)}</span></p>
-                            <p>Review: ${review.text}</p>
-                            <button class="edit-btn" onclick="editReview(${index}, ${reviewIndex})">Edit</button>
-                            <button class="delete-btn" onclick="deleteReview(${index}, ${reviewIndex})">Delete</button>
-                        </div>
-                    `;
-                });
-            } else {
-                reviewsContainer.innerHTML += '<p>No reviews yet.</p>';
-            }
-        }
-
-        function calculateAverageRating(reviews) {
-            if (reviews.length === 0) return 0;
-            let sum = reviews.reduce((acc, review) => acc + review.rating, 0);
-            return sum / reviews.length;
-        }
-
-        function getStars(rating) {
-            return '★'.repeat(rating) + '☆'.repeat(5 - rating);
-        }
-
-        function formatRupiah(amount) {
-            return new Intl.NumberFormat('id-ID').format(amount);
-        }
-
-        // Function to edit a review
-        function editReview(productIndex, reviewIndex) {
-            window.location.href = `review.html?index=${productIndex}&editReview=${reviewIndex}`;
-        }
-
-        // Function to delete a review
-        function deleteReview(productIndex, reviewIndex) {
-            if (!confirm('Are you sure you want to delete this review?')) return;
-            let products = JSON.parse(localStorage.getItem('products')) || [];
-            let product = products[productIndex];
-            product.reviews.splice(reviewIndex, 1); // Remove review from the list
-            localStorage.setItem('products', JSON.stringify(products)); // Save changes
-            displayProductDetails(productIndex); // Refresh page
+            // Redirect to the main page
+            window.location.href = 'index.html';
         }
     </script>
 </body>
