@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Init Forum</title>
+    <script>
+        window.onload = function() {
+            console.log('Memulai proses inisialisasi...');
+
+            // Cek apakah forumThreads sudah diinisialisasi di localStorage
+            if (!localStorage.getItem('forumThreads')) {
+                console.log('forumThreads belum ada, melakukan inisialisasi dengan post default...');
+
+                // Inisialisasi dengan post default
+                const defaultThreads = [
+                    {
+                        title: "Selamat Datang di Forum ProductLens!",
+                        author: "Admin",
+                        content: "Halo semua! Selamat datang di forum [Nama Forum], tempat di mana Anda dapat berdiskusi, berbagi informasi, dan bertanya tentang produk-produk yang kami ulas di situs kami. Kami berharap forum ini akan menjadi tempat yang bermanfaat bagi Anda semua.",
+                        replies: [
+                            { author: "jacksep", content: "Terima kasih atas sambutannya! Saya baru saja bergabung dan sangat tertarik untuk membahas ulasan produk terbaru di sini. Semoga forum ini bisa membantu saya menemukan produk yang tepat." },
+                            { author: "Markip", content: "Halo semua, saya sudah lama mengikuti website ini dan sangat senang akhirnya ada forum untuk berdiskusi. Apakah ada kategori khusus untuk produk elektronik?" }
+                        ]
+                    },
+                    {
+                        title: "Tips Menjaga Peralatan Berkebun agar Tetap Awet",
+                        author: "GreenThumb88",
+                        content: "Halo semua! Saya baru saja membeli set peralatan berkebun baru dan ingin memastikan mereka bertahan lama. Ada tips atau trik yang bisa kalian bagikan untuk merawat alat berkebun agar tetap awet dan berfungsi dengan baik?",
+                        replies: [
+                            { author: "NatureLover88", content: "Saya biasanya membersihkan alat-alat berkebun setelah setiap penggunaan dan menyimpannya di tempat yang kering. Untuk alat berbahan logam, pastikan untuk mengoleskan sedikit minyak setelah dibersihkan agar tidak berkarat." },
+                            { author: "GardenGus", content: "Untuk menjaga agar sekop dan cangkul tetap tajam, saya menggunakan batu asah secara berkala. Juga, jangan lupa untuk memeriksa dan mengencangkan bagian-bagian yang bisa longgar." }
+                        ]
+                    },
+                    {
+                        title: "Produk Kecantikan yang Wajib Dimiliki",
+                        author: "BeautyLover_21",
+                        content: "Hi semuanya! Saya sedang mencari produk kecantikan terbaru yang bisa membuat rutinitas kecantikan saya lebih efektif. Apa saja produk kecantikan yang menurut kalian wajib dimiliki dan kenapa? Tertarik untuk mendengar rekomendasi dari kalian!",
+                        replies: [
+                            { author: "GlamorGirl", content: "Saya sangat merekomendasikan serum vitamin C untuk mencerahkan kulit dan mengurangi noda hitam. Selain itu, masker wajah dengan kandungan hyaluronic acid juga sangat membantu untuk menjaga kelembapan kulit." },
+                            { author: "dreamybull", content: "Untuk rutinitas harian, primer dengan SPF sangat penting. Itu tidak hanya melindungi kulit dari sinar matahari tetapi juga membuat makeup lebih tahan lama." }
+                        ]
+                    },
+                    {
+                        title: "Rekomendasi Buku untuk Dibaca di Akhir Pekan",
+                        author: "BookWorm99",
+                        content: "Hai semua! Saya sedang mencari buku-buku menarik untuk dibaca selama akhir pekan. Apakah ada buku yang baru saja kalian baca dan sangat rekomendasikan? Saya terbuka untuk berbagai genre, jadi jangan ragu untuk berbagi favorit kalian!",
+                        replies: [
+                            { author: "NovelNerd", content: "Saya baru saja selesai membaca 'The Night Circus' oleh Erin Morgenstern. Ceritanya sangat magis dan penuh imajinasi. Saya sangat merekomendasikannya jika Anda suka fantasi." },
+                            { author: "AgungTur", content: "Jika Anda suka thriller, 'Gone Girl' oleh Gillian Flynn adalah pilihan yang bagus. Ceritanya sangat menegangkan dan penuh dengan plot twist yang tidak terduga." }
+                        ]
+                    },
+                    {
+                        title: "Apakah Ada Yang Tahu Cara Merawat Jam Tangan Pintar?",
+                        author: "TechSavvy_Yudis",
+                        content: "Halo forum! Saya baru saja membeli jam tangan pintar dan ingin tahu lebih banyak tentang cara merawatnya agar tetap berfungsi dengan baik. Ada yang punya tips tentang perawatan rutin, cara membersihkan, atau hal-hal lain yang perlu diperhatikan? Terima kasih sebelumnya!",
+                        replies: [
+                            { author: "scrapper", content: "Pastikan untuk membersihkan layar jam tangan pintar secara berkala dengan kain mikrofiber. Hindari kontak dengan air jika jam tangan Anda tidak tahan air. Juga, pastikan perangkat lunak selalu diperbarui untuk mendapatkan fitur terbaru." },
+                            { author: "TechieTom", content: "Selalu simpan jam tangan di tempat yang kering dan dingin saat tidak digunakan. Jika ada masalah dengan baterai, coba restart perangkat terlebih dahulu sebelum membawa ke teknisi." }
+                        ]
+                    },
+                    {
+                        title: "Pengalaman Menggunakan Blender Berkualitas Tinggi",
+                        author: "Optimum_Pride",
+                        content: "Hai! Saya sedang mencari blender berkualitas tinggi untuk membuat smoothie dan makanan lainnya. Ada yang punya pengalaman menggunakan blender tertentu yang bisa direkomendasikan? Apa kelebihan dan kekurangan dari produk yang kalian gunakan?",
+                        replies: [
+                            { author: "ambatron", content: "Saya menggunakan Vitamix 5200 dan sangat puas dengan performanya. Blender ini sangat kuat dan bisa menghaluskan bahan-bahan keras dengan mudah. Namun, harganya memang cukup tinggi." },
+                            { author: "RUSdi", content: "Saya menggunakan Vitamix 5200 dan sangat puas dengan performanya. Blender ini sangat kuat dan bisa menghaluskan bahan-bahan keras dengan mudah. Namun, harganya memang cukup tinggi." }
+                        ]
+                    },
+                    {
+                        title: "DIY Proyek Rumah yang Menarik",
+                        author: "CraftyDIYer",
+                        content: "Selamat sore! Saya suka melakukan proyek DIY di rumah dan sedang mencari ide baru. Apa proyek DIY yang paling menarik atau bermanfaat yang pernah kalian coba? Berbagi tips dan trik akan sangat membantu!",
+                        replies: [
+                            { author: "HandyHannah", content: "Saya baru-baru ini membuat rak dinding dari kayu bekas, dan itu sangat mudah dan murah. Ini juga menambah sentuhan pribadi pada ruang tamu saya." },
+                            { author: "ToolTimeTom", content: "Jika Anda suka berkebun, cobalah membuat pot tanaman dari botol plastik bekas. Itu tidak hanya membantu daur ulang, tetapi juga memberikan sentuhan kreatif pada taman Anda." }
+                        ]
+                    }
+                ];
+
+                // Simpan ke localStorage
+                localStorage.setItem('forumThreads', JSON.stringify(defaultThreads));
+                console.log('Post default berhasil diinisialisasi.');
+            } else {
+                console.log('forumThreads sudah ada, tidak perlu inisialisasi ulang.');
+            }
+
+            // Redirect ke forum.html setelah inisialisasi
+            console.log('Mengalihkan ke forum.html...');
+            window.location.href = 'forum.html';
+        };
+    </script>
+</head>
+<body>
+    <h1>Memproses inisialisasi forum...</h1>
+</body>
+</html>

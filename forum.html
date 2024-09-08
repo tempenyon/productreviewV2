@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #13547e;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .thread-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .thread-item h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .thread-item p {
+            margin: 5px 0;
+        }
+
+        .thread-item a {
+            color: #13547e;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .thread-item a:hover {
+            text-decoration: underline;
+        }
+
+        .create-thread-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #13547e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .create-thread-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Forum</h1>
+    </header>
+
+    <main>
+        <a href="new-post.html" class="create-thread-button">Buat Post Baru</a>
+        <section id="threads">
+            <!-- Threads will be dynamically inserted here -->
+        </section>
+    </main>
+
+    <script>
+        function displayThreads() {
+            const threads = JSON.parse(localStorage.getItem('forumThreads')) || [];
+            const threadsSection = document.getElementById('threads');
+
+            if (threads.length === 0) {
+                threadsSection.innerHTML = '<p>No threads available.</p>';
+                return;
+            }
+
+            threadsSection.innerHTML = '';
+            threads.forEach((thread, index) => {
+                const threadItem = `
+                    <div class="thread-item">
+                        <h2><a href="post-detail.html?index=${index}">${thread.title}</a></h2>
+                        <p>by ${thread.author}</p>
+                        <p>${thread.content.substring(0, 100)}...</p>
+                    </div>
+                `;
+                threadsSection.innerHTML += threadItem;
+            });
+        }
+
+        // Load threads when the page is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            displayThreads();
+        });
+    </script>
+</body>
+</html>

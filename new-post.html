@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Thread</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #13547e;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .form-group textarea {
+            height: 150px;
+        }
+
+        .form-group button {
+            padding: 10px 20px;
+            background-color: #13547e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #13547e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Buat Post Baru</h1>
+    </header>
+
+    <main>
+        <form id="newThreadForm">
+            <div class="form-group">
+                <label for="title">Judul:</label>
+                <input type="text" id="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="author">Penulis:</label>
+                <input type="text" id="author" required>
+            </div>
+
+            <div class="form-group">
+                <label for="content">Isi:</label>
+                <textarea id="content" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <button type="button" onclick="createThread()">Submit</button>
+            </div>
+        </form>
+
+        <a href="forum.html" class="back-button">Kembali ke Forum</a>
+    </main>
+
+    <script>
+        function createThread() {
+            const title = document.getElementById('title').value.trim();
+            const author = document.getElementById('author').value.trim();
+            const content = document.getElementById('content').value.trim();
+
+            if (!title || !author || !content) return;
+
+            let threads = JSON.parse(localStorage.getItem('forumThreads')) || [];
+            const newThread = {
+                title: title,
+                author: author,
+                content: content,
+                replies: []
+            };
+            threads.push(newThread);
+            localStorage.setItem('forumThreads', JSON.stringify(threads));
+
+            // Redirect to the forum page after posting
+            window.location.href = 'forum.html';
+        }
+    </script>
+</body>
+</html>

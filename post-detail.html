@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thread Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #13547e;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .thread-details {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .thread-details h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .thread-details p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .reply {
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .reply h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .reply p {
+            margin: 5px 0;
+        }
+
+        .reply-form {
+            margin-top: 20px;
+        }
+
+        .reply-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .reply-form button {
+            padding: 10px 20px;
+            background-color: #13547e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .reply-form button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #13547e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Forum Details</h1>
+    </header>
+
+    <main>
+        <section id="threadDetails" class="thread-details">
+            <!-- Detail thread akan dimasukkan di sini -->
+        </section>
+
+        <section id="replies" class="reply">
+            <h3>Balasan</h3>
+            <!-- Balasan thread akan dimasukkan di sini -->
+        </section>
+
+        <section class="reply-form">
+            <h3>Tambahkan Balasan</h3>
+            <textarea id="replyContent" placeholder="Write your reply here..."></textarea>
+            <button onclick="addReply()">Post Balasan</button>
+        </section>
+
+        <a href="forum.html" class="back-button">Kembali ke Forum</a>
+    </main>
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function displayThreadDetails(index) {
+            const threads = JSON.parse(localStorage.getItem('forumThreads')) || [];
+            const thread = threads[index];
+
+            if (!thread) {
+                document.getElementById('threadDetails').innerHTML = '<p>Thread not found.</p>';
+                return;
+            }
+
+            let threadDetails = `
+                <h2>${thread.title}</h2>
+                <p>by ${thread.author}</p>
+                <p>${thread.content}</p>
+            `;
+            document.getElementById('threadDetails').innerHTML = threadDetails;
+
+            displayReplies(thread.replies);
+        }
+
+        function displayReplies(replies) {
+            // Bersihkan area balasan sebelum menambahkan yang baru
+            const repliesSection = document.getElementById('replies');
+            repliesSection.innerHTML = '<h3>Replies</h3>';
+
+            replies.forEach(reply => {
+                let replyHtml = `
+                    <p><strong>${reply.author}:</strong> ${reply.content}</p>
+                `;
+                repliesSection.innerHTML += replyHtml;
+            });
+        }
+
+        function addReply() {
+            const index = getQueryParam('index');
+            const replyContent = document.getElementById('replyContent').value.trim();
+            if (!replyContent) return;
+
+            let threads = JSON.parse(localStorage.getItem('forumThreads')) || [];
+            if (!threads[index]) return;
+
+            const newReply = {
+                author: "User",  // Ubah ini sesuai nama user yang login
+                content: replyContent
+            };
+            threads[index].replies.push(newReply);
+            localStorage.setItem('forumThreads', JSON.stringify(threads));
+            document.getElementById('replyContent').value = '';
+
+            // Tampilkan balasan baru tanpa refresh
+            displayReplies(threads[index].replies);
+        }
+
+        // Muat detail thread ketika halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            const index = getQueryParam('index');
+            displayThreadDetails(index);
+        });
+    </script>
+</body>
+</html>
